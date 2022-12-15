@@ -16,8 +16,7 @@ class FieldtypeStars extends FieldtypeFloat {
 	}
 
 	public function getInputfield(Page $page, Field $field) {
-		$inputField = $this->wire()->modules->get('InputfieldStars');
-		return $inputField;
+		return $this->wire()->modules->get('InputfieldStars');
 	}
 
 	/**
