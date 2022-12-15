@@ -1,0 +1,21 @@
+// Includes some extra specificity and rules for use with FormBuilder "basic" framework
+.InputfieldStars, .InputfieldForm .InputfieldStars {
+	input { display:none !important; }
+	.rater-wrap { display:flex;
+		&:hover {
+			.rater-clear { display:block; }
+		}
+	}
+	.star-rating { width:0; position:relative; background-color:#e2e2e2; -webkit-mask-image:url('rater-js/star.svg');
+		-webkit-mask-repeat:repeat-x; mask-image:url('rater-js/star.svg'); mask-repeat:repeat-x; cursor:pointer; margin-right:5px; flex-shrink:0;
+		.star-value { position:absolute; height:100%; width:100%; -webkit-mask-image:url('rater-js/star.svg'); -webkit-mask-repeat:repeat-x;
+			&.disabled { cursor:default; }
+			&.is-busy { cursor:wait; }
+			&.rtl { transform:scaleX(-1); right:0; left:auto; }
+		}
+	}
+	.rater-clear { text-indent:100%; white-space:nowrap; overflow:hidden; background:url('rater-js/clear.svg') no-repeat center center transparent; background-size:16px 16px; width:16px; border:0; padding:0; cursor:pointer; filter:invert(85%); display:none;
+		&:hover { filter:invert(50%); background:url('rater-js/clear.svg') no-repeat center center transparent; background-size:16px 16px; }
+	}
+}
+

@@ -1,0 +1,139 @@
+<?php namespace ProcessWire;
+
+class InputfieldStars extends InputfieldFloat {
+
+	public static function getModuleInfo() {
+		return array(
+			'title' => 'Stars',
+			'summary' => 'Sets a float value by selecting a star rating.',
+			'version' => '0.1.0',
+			'author' => 'Robin Sallis',
+			'href' => 'https://github.com/Toutouwai/FieldtypeStars',
+			'icon' => 'star',
+			'requires' => 'FieldtypeStars, ProcessWire>=3.0.196, PHP>=5.4.0',
+		);
+	}
+
+	/**
+	 * Construct
+	 */
+	public function __construct() {
+		parent::__construct();
+		// Set defaults and ensure config values get populated from Field object
+		$this->starsNumber = 5;
+		$this->allowHalf = 0;
+		$this->starSize = 32;
+		$this->starColor = '#ffbc00';
+	}
+
+	/**
+	 * Render ready
+	 *
+	 * @param Inputfield|InputfieldWrapper|null
+	 * @param bool $renderValueMode
+	 * @return bool
+	 *
+	 */
+	public function renderReady(Inputfield $parent = null, $renderValueMode = false) {
+		$config = $this->wire()->config;
+		$info = self::getModuleInfo();
+		$version = $info['version'];
+		$config->scripts->add($config->urls->$this . "rater-js/rater-js.js?v=$version");
+		return parent::renderReady($parent, $renderValueMode);
+	}
+
+	/**
+	 * Render Inputfield
+	 *
+	 * @return string
+	 *
+	 */
+	public function ___render() {
+		$out = parent::___render();
+		$settings = [
+			'starsNumber' => $this->starsNumber,
+			'allowHalf' => $this->allowHalf,
+			'starSize' => $this->starSize,
+			'starColor' => $this->starColor,
+		];
+		$settings_json = json_encode($settings);
+		$out .= "<div class='rater-wrap'><div class='rater' data-settings='$settings_json'></div><button type='button' class='rater-clear'>Clear</button></div>";
+		return $out;
+	}
+
+	/**
+	 * Configure Inputfield
+	 *
+	 * @return InputfieldWrapper
+	 *
+	 */
+	public function getConfigInputfields() {
+		
+		$modules = $this->wire()->modules;
+		$inputfields = parent::getConfigInputfields();
+		
+		$removes = ['inputType', 'size', 'min', 'max'];
+		foreach($removes as $name) $inputfields->remove($name);
+		
+		/** @var InputfieldInteger $f */
+		$f = $modules->get('InputfieldInteger');
+		$f_name = 'starsNumber';
+		$f->name = $f_name;
+		$f->label = $this->_('Number of stars');
+		$f->min = 1;
+		$f->inputType = 'number';
+		$f->value = $this->$f_name;
+		$f->columnWidth = 50;
+		$inputfields->add($f);
+
+		/** @var InputfieldRadios $f */
+		$f = $modules->get('InputfieldRadios');
+		$f_name = 'allowHalf';
+		$f->name = $f_name;
+		$f->label = $this->_('Allow half stars?');
+		$f->addOption(0, $this->_('No'));
+		$f->addOption(1, $this->_('Yes'));
+		$f->optionColumns = 1;
+		$f->value = $this->$f_name;
+		$f->columnWidth = 50;
+		$inputfields->add($f);
+
+		/** @var InputfieldInteger $f */
+		$f = $modules->get('InputfieldInteger');
+		$f_name = 'starSize';
+		$f->name = $f_name;
+		$f->label = $this->_('Star size in pixels');
+		$f->min = 1;
+		$f->inputType = 'number';
+		$f->value = $this->$f_name;
+		$f->columnWidth = 50;
+		$inputfields->add($f);
+
+		/** @var InputfieldText $f */
+		$f = $modules->get('InputfieldText');
+		$f_name = 'starColor';
+		$f->name = $f_name;
+		$f->label = $this->_('Star color (hex)');
+		$f->pattern = '^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$';
+		$f->attr('style', "color:white; text-shadow:0 0 5px rgba(0,0,0,0.5); background-color:{$this->$f_name}; border-color:{$this->$f_name};");
+		$f->attr('onchange', 'this.style.backgroundColor = this.value; this.style.borderColor = this.value');
+		$f->value = $this->$f_name;
+		$f->columnWidth = 50;
+		$inputfields->add($f);
+
+		return $inputfields;
+	}
+
+	/**
+	 * Get config fields allowed for context
+	 *
+	 * @param Field $field
+	 * @return array
+	 *
+	 */
+	public function ___getConfigAllowContext($field) {
+		$allowed = parent::___getConfigAllowContext($field);
+		return array_merge($allowed, ['starSize', 'starColor']);
+	}
+
+}

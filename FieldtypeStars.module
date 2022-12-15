@@ -1,0 +1,36 @@
+<?php namespace ProcessWire;
+
+class FieldtypeStars extends FieldtypeFloat {
+
+	public static function getModuleInfo() {
+		return array(
+			'title' => 'Stars',
+			'summary' => 'Fieldtype for InputfieldStars, extends FieldtypeFloat.',
+			'version' => '0.1.0',
+			'author' => 'Robin Sallis',
+			'href' => 'https://github.com/Toutouwai/FieldtypeStars',
+			'icon' => 'star',
+			'installs' => 'InputfieldStars',
+			'requires' => 'ProcessWire>=3.0.196, PHP>=5.4.0',
+		);
+	}
+
+	public function getInputfield(Page $page, Field $field) {
+		$inputField = $this->wire()->modules->get('InputfieldStars');
+		return $inputField;
+	}
+
+	/**
+	 * Get Inputfields to configure the Field
+	 *
+	 * @param Field $field
+	 * @return InputfieldWrapper
+	 *
+	 */
+	public function ___getConfigInputfields(Field $field) {
+		$inputfields = parent::___getConfigInputfields($field);
+		$inputfields->remove('precision');
+		return $inputfields;
+	}
+
+}
