@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-	document.querySelectorAll('.InputfieldStars .rater').forEach((el) => {
+	document.querySelectorAll('.InputfieldStars .rater:not(.rater-init)').forEach((el) => {
+		el.classList.add('rater-init');
 		let input = el.parentElement.previousElementSibling;
 		let settings = JSON.parse(el.dataset.settings);
 		let step = settings.allowHalf ? 0.5 : 1;

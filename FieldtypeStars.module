@@ -6,7 +6,7 @@ class FieldtypeStars extends FieldtypeFloat {
 		return array(
 			'title' => 'Stars',
 			'summary' => 'Fieldtype for InputfieldStars, extends FieldtypeFloat.',
-			'version' => '0.1.0',
+			'version' => '0.1.1',
 			'author' => 'Robin Sallis',
 			'href' => 'https://github.com/Toutouwai/FieldtypeStars',
 			'icon' => 'star',

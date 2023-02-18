@@ -6,7 +6,7 @@ class InputfieldStars extends InputfieldFloat {
 		return array(
 			'title' => 'Stars',
 			'summary' => 'Sets a float value by selecting a star rating.',
-			'version' => '0.1.0',
+			'version' => '0.1.1',
 			'author' => 'Robin Sallis',
 			'href' => 'https://github.com/Toutouwai/FieldtypeStars',
 			'icon' => 'star',
