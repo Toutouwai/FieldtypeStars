@@ -34,7 +34,7 @@ class InputfieldStars extends InputfieldFloat {
 	 * @return bool
 	 *
 	 */
-	public function renderReady(Inputfield $parent = null, $renderValueMode = false) {
+	public function renderReady($parent = null, $renderValueMode = false) {
 		$config = $this->wire()->config;
 		$info = self::getModuleInfo();
 		$version = $info['version'];
